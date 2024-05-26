@@ -66,7 +66,7 @@ class EqualWeightPortfolio:
         """
         TODO: Complete Task 1 Below
         """
-
+        self.portfolio_weights[assets]=1/11
         """
         TODO: Complete Task 1 Above
         """
@@ -117,7 +117,10 @@ class RiskParityPortfolio:
         """
         TODO: Complete Task 2 Below
         """
-
+        for i in range(self.lookback+1,len(df)):
+            tmp=1/df_returns[assets][i-self.lookback:i].std()
+            tmp/=tmp.sum()
+            self.portfolio_weights.loc[self.portfolio_weights.index[[i]],assets]=tmp.values
         """
         TODO: Complete Task 2 Above
         """
@@ -192,8 +195,9 @@ class MeanVariancePortfolio:
 
                 # Sample Code: Initialize Decision w and the Objective
                 # NOTE: You can modify the following code
-                w = model.addMVar(n, name="w", ub=1)
-                model.setObjective(w.sum(), gp.GRB.MAXIMIZE)
+                w = model.addMVar(n, name="w", lb=0)
+                model.addConstr(w.sum() == 1, name="Budget_Constraint")
+                model.setObjective(w @ mu - gamma / 2 * (w @ Sigma @ w), gp.GRB.MAXIMIZE)
 
                 """
                 TODO: Complete Task 3 Below
@@ -422,10 +426,10 @@ class AssignmentJudge:
         return 0
 
     def check_all_answer(self):
-        score = 35
-        #score += self.check_answer_eqw(eqw_dataframe=self.eqw)
-        #score += self.check_answer_rp(self.rp)
-        #score += self.check_answer_mv_list(self.mv_list)
+        score = 0
+        score += self.check_answer_eqw(eqw_dataframe=self.eqw)
+        score += self.check_answer_rp(self.rp)
+        score += self.check_answer_mv_list(self.mv_list)
         return score
 
 

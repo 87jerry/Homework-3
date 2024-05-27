@@ -74,7 +74,8 @@ class MyPortfolio:
         """
         TODO: Complete Task 4 Below
         """
-
+        self.portfolio_weights["XLK"]=1
+        
         """
         TODO: Complete Task 4 Above
         """
@@ -190,9 +191,9 @@ class AssignmentJudge:
         return False
 
     def check_all_answer(self):
-        score = 20
-        #score += self.check_sharp_ratio_greater_than_one()
-        #score += self.check_sharp_ratio_greater_than_spy()
+        score = 0
+        score += self.check_sharp_ratio_greater_than_one()
+        score += self.check_sharp_ratio_greater_than_spy()
         return score
 
 
